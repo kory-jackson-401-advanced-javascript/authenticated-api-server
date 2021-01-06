@@ -6,7 +6,6 @@ const mockRequest = supergoose(serverObj.app);
 const mockServer = jest.fn(serverObj.start)
 const categoriesModel = require("../models/categories/categories-model.js");
 const productsModel = require("../models/products/products-model.js");
-const { expect, it, describe } = require("@jest/globals");
 
 function categoriesCreate(name) {
   return {
@@ -25,16 +24,30 @@ function productsCreate(name, category) {
   };
 }
 
+function todoCreate(text, assignee) {
+  return {
+    "text": text,
+    "assignee": assignee,
+    "complete": false,
+    "difficulty": 1,
+  }
+}
+
 const category1 = categoriesCreate("food");
 const category2 = categoriesCreate("supplies");
 const products1 = productsCreate("spaghetti", "food");
 const products2 = productsCreate("pencils", "supplies");
+const todo1 = todoCreate("clean house", "kory");
+const todo2 = todoCreate("take a nap", "frodo");
 
 beforeAll(async (done) => {
   await mockRequest.post("/api/v1/categories").send(category1);
   await mockRequest.post("/api/v1/categories").send(category2);
   await mockRequest.post("/api/v1/products").send(products1);
   await mockRequest.post("/api/v1/products").send(products2);
+  await mockRequest.post("/api/v1/todo").send(todo1);
+  await mockRequest.post("/api/v1/todo").send(todo2);
+
   done();
 });
 
@@ -129,6 +142,52 @@ describe("products testing", () => {
   })
 });
 
+describe("todo testing", () => {
+  it("gets all todo", async () => {
+    let response = await mockRequest.get("/api/v1/todo");
+
+
+    expect(response).toBeDefined();
+    expect(response.body.count).toBe(2);
+    expect(response.body.results[0].text).toBe("clean house");
+  });
+
+  it("gets one todo", async () => {
+    let todo = await mockRequest.get("/api/v1/todo");
+    let id = todo.body.results[0]._id;
+    let response = await mockRequest.get(`/api/v1/todo/${id}`);
+
+    expect(response.body.text).toBe("clean house");
+  });
+
+  it("updates category", async () => {
+    let todo = await mockRequest.get("/api/v1/todo");
+    let id = todo.body.results[1]._id;
+    
+    expect(todo.body.results[1].text).toBe("take a nap")
+    
+    let response = await mockRequest.put(`/api/v1/todo/${id}`).send(todoCreate("took a nap"));
+
+    expect(response.body.text).toBe("took a nap");
+  })
+
+  it("deletes category", async () => {
+    let todo = await mockRequest.get("/api/v1/todo");
+    let id = todo.body.results[1]._id;
+    
+    expect(todo.body.count).toBe(2)
+    
+    let response = await mockRequest.delete(`/api/v1/todo/${id}`);
+    expect(response.status).toBe(200);
+
+    let newtodo = await mockRequest.get("/api/v1/todo");
+
+
+    expect(newtodo.body.count).toBe(1);
+
+  })
+});
+
 describe("lists all models", () => {
   it("lists models", async () => {
     let response = await mockRequest.get("/api/v1/models");
@@ -145,7 +204,7 @@ describe("creates an error", () => {
   })
 
   it("throws 500", async () => {
-    let response = await mockRequest.get("/api/v1/todo")
+    let response = await mockRequest.post("/api/v1/todos")
 
     expect(response.status).toBe(500)
   })

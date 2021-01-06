@@ -9,27 +9,32 @@ const users = require("./models/users-models.js");
 const router = express.Router();
 
 router.post("/signup", async (req, res, next) => {
-  try {
-    let userObj = {
-      username: req.body.username,
-      password: req.body.password,
-      role: req.body.role,
-    };
-
-    let record = new users(userObj);
-
-    let newUser = await record.save();
-    let token = await record.generateToken();
-
-    res.set("auth", token);
-    let userObject = {
-      token: token,
-      user: newUser,
-    };
-    res.status(201).send(userObject);
-  } catch (e) {
-    next(e.message);
-  }
+    let valid = await users.findOne({ username: req.body.username });
+    if (!valid) {
+      try {
+        let userObj = {
+          username: req.body.username,
+          password: req.body.password,
+          role: req.body.role,
+        };
+    
+        let record = new users(userObj);
+    
+        let newUser = await record.save();
+        let token = await record.generateToken();
+    
+        res.set("auth", token);
+        let userObject = {
+          token: token,
+          user: newUser,
+        };
+        res.status(201).send(userObject);
+      } catch (e) {
+        next(e.message);
+      }
+    } else {
+      next("Username already exists");
+    }
 });
 
 router.post("/signin", basicAuth, (req, res, next) => {

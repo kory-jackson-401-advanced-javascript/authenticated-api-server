@@ -18,7 +18,6 @@ const basicAuth = async (req, res, next) => {
 
     next();
   } catch (e) {
-    console.log(e);
     next("Invalid Credentials");
   }
 };
