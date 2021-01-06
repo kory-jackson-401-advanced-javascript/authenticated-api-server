@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/kory-jackson-401-advanced-javascript/authenticated-api-server#readme",
   "dependencies": {
+    "@code-fellows/supergoose": "^1.0.11",
     "base-64": "^1.0.0",
     "bcrypt": "^5.0.0",
     "cors": "^2.8.5",

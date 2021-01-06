@@ -10,6 +10,11 @@ const router = express.Router();
 
 router.param("model", modelFinder.load);
 
+router.get("/models", (req, res) => {
+  modelFinder.list()
+    .then(models => res.status(200).json(models));
+})
+
 router.get("/:model", getAll);
 router.post("/:model", createOne);
 router.get("/:model/:id", getOne);
@@ -19,7 +24,7 @@ router.delete("/:model/:id", deleteOne);
 async function getAll(req, res) {
   const response = await req.model.get();
   const results = {
-    const: response.length,
+    count: response.length,
     results: response,
   };
   res.status(200).json(results);

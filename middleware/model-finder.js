@@ -20,7 +20,7 @@ const list = () => {
       contents.filter(
         (entry) =>
           fs.lstatSync(`${modelsFolder}/${entry}`).isDirectory() &&
-          fs.statSync(`${modelsFolder}/${entry}/${entry}-model.ls`)
+          fs.statSync(`${modelsFolder}/${entry}/${entry}-model.js`)
       )
     )
     .catch(console.error);
