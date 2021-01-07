@@ -21,7 +21,12 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(logger);
 app.get("/", (req, res) => {
-  res.status(200).send("Are you looking for some droids?? Try /api/v1/categories")
+  let obj = {
+    categories: "/api/v1/categories",
+    products: "/api/v1/products",
+    todo: "/api/v1/todo"
+  }
+  res.status(200).send("Are you looking for some droids?? For Categories: /api/v1/categories, for Products: /api/v1/products and for Todo: /api/v1/todo")
 })
 
 
