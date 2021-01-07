@@ -7,6 +7,8 @@
 
 ### Setup
 
+- [live server](https://authenticatedapiserver.herokuapp.com/)
+
 #### `.env` requirements
 
 - `PORT` - 3000
