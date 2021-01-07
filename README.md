@@ -1,11 +1,9 @@
-# LAB - 00
+# LAB - Authenticated API Server
 
-## Deployment Test
+## Authenticated API
 
-### Author: John Cokos
+### Author: Kory Jackson
 
-- [tests report]()
-- [front-end](https://code-401-js-lab-example.herokuapp.com/status)
 
 ### Setup
 
@@ -26,6 +24,8 @@
 #### Tests
 
 - Unit Tests: `npm test`
+- tests report ![test results](./assets/test_coverage_authenticated_api.png)
+
 
 #### UML
 
