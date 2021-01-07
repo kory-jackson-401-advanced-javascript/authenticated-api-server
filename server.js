@@ -20,6 +20,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(logger);
+app.get("/", (req, res) => {
+  res.status(200).send("Are you looking for some droids?? Try /api/v1/categories")
+})
+
 
 //Routes
 app.use("/api/v1/", apiRoutes);
