@@ -1,7 +1,7 @@
 const serverObj = require("../server.js");
 const supergoose = require("@code-fellows/supergoose");
 const mockRequest = supergoose(serverObj.app);
-const mockServer = jest.fn(serverObj.start)
+const mockServer = jest.fn(serverObj.start);
 
 
 const createUser = (obj, role) => {
@@ -26,6 +26,7 @@ beforeAll(async (done) => {
 
   done();
 })
+
 describe("Signup route", () => {
   it("signs up a user", async () => {
     let userObj = createUser("test")
@@ -65,7 +66,7 @@ describe("Signin Route", () => {
   })
 })
 
-describe("server listening", () => {
+xdescribe("server listening", () => {
   it("listens", () => {
     let server = mockServer(3000);
 
