@@ -66,11 +66,13 @@ describe("Signin Route", () => {
   })
 })
 
-xdescribe("server listening", () => {
+describe("server listening", () => {
   it("listens", () => {
     let server = mockServer(3000);
 
     expect(server).toBeDefined();
+
+    server.close();
   })
 })
 
